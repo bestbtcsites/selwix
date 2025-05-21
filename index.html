@@ -1,69 +1,129 @@
-<style>
-  .container {
-    display: flex;
-    font-family: Arial, sans-serif;
-    margin: 5px 0;
-  }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ROI Monitor</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background: #121212;
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+      font-size: 0.75em; /* %25 küçültme */
+    }
 
-  table {
-    border-collapse: collapse;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    width: 750px; /* eşit genişlik */
-    height: 5px;
-    text-align: center;
-    margin: 0; /* boşlukları sıfırla */
-  }
+    .info-bar {
+      display: flex;
+      flex-direction: row;
+      background: #1f1f1f;
+      border-radius: 8px;
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
+      overflow: hidden;
+      font-size: 1.2em;
+      width: 100%;
+      max-width: 600px;
+      margin-bottom: 30px;
+    }
 
-  /* İkinci tabloya sola sınır ekleyerek ayrım koyabiliriz */
-  table + table {
-    border-left: 2px solid #ccc;
-  }
+    .info-section {
+      flex: 1;
+      padding: 20px;
+      text-align: center;
+    }
 
-  td {
-    padding: 12px 20px;
-    font-size: 1.2em;
-    vertical-align: middle;
-    color: #333;
-  }
+    .info-section:not(:last-child) {
+      border-right: 1px solid #333;
+    }
 
-  .green-bold {
-    color: green;
-    font-weight: bold;
-  }
-</style>
+    .label {
+      display: block;
+      color: #aaa;
+      font-size: 0.9em;
+      margin-bottom: 6px;
+    }
 
-<div class="container">
-  <table>
-    <tr>
-      <td>Payout Ratio: <span id="roi" class="green-bold"></span></td>
-    </tr>
-  </table>
+    .value {
+      font-weight: bold;
+      color: #00e676;
+      font-size: 1.4em;
+    }
 
-  <table>
-    <tr>
-      <td>Monitored: <span id="days" class="green-bold"></span></td>
-    </tr>
-  </table>
-</div>
+    .progress-container {
+      width: 100%;
+      max-width: 600px;
+      background-color: #e0e0e0;
+      border-radius: 5px;
+      overflow: hidden;
+      position: relative;
+      height: 26px;
+      margin-bottom: 20px;
+    }
 
-<script>
-  window.onload = function () {
-    const roiDailyIncrease = 1.5;
+    .progress-bar {
+      height: 100%;
+      text-align: center;
+      line-height: 26px;
+      font-weight: bold;
+      color: #121212;
+      transition: width 0.4s ease, background-color 0.4s ease;
+      position: absolute;
+      top: 0;
+      left: 0;
+      border-radius: 5px 0 0 5px;
+      white-space: nowrap;
+      padding-left: 10px;
+      font-size: 1em;
+    }
+  </style>
+</head>
+<body>
 
-    const roiStartDate = new Date("2024-06-19");
-    const daysStartDate = new Date("2024-06-19");
+  <div class="info-bar">
+    <div class="info-section">
+      <span class="label">Payout Ratio</span>
+      <span id="roi" class="value">--%</span>
+    </div>
+    <div class="info-section">
+      <span class="label">Monitored</span>
+      <span id="days" class="value">-- Days</span>
+    </div>
+  </div>
 
+  <div class="progress-container">
+    <div id="progress-bar" class="progress-bar">0%</div>
+  </div>
+
+  <script>
+    const startDate = new Date("2024-06-19");
     const today = new Date();
+    const daysElapsed = Math.floor((today - startDate) / (1000 * 60 * 60 * 24)) + 1;
+    const payoutRatio = (1.50 * daysElapsed).toFixed(2);
 
-    const roiDiffTime = today - roiStartDate;
-    const roiDiffDays = Math.floor(roiDiffTime / (1000 * 60 * 60 * 24));
+    document.getElementById("roi").innerText = payoutRatio + "%";
+    document.getElementById("days").innerText = daysElapsed + " Days";
 
-    const daysDiffTime = today - daysStartDate;
-    const daysDiffDays = Math.floor(daysDiffTime / (1000 * 60 * 60 * 24));
+    const progressBar = document.getElementById("progress-bar");
+    const visualWidth = Math.min(payoutRatio, 100);
+    progressBar.style.width = visualWidth + "%";
+    progressBar.innerText = payoutRatio + "%";
 
-    const currentROI = roiDailyIncrease * (roiDiffDays + 1);
-    document.getElementById("roi").innerText = currentROI + "%";
+    const ratio = parseFloat(payoutRatio);
+    if (ratio <= 50) {
+      progressBar.style.backgroundColor = "#ffeb3b";
+      progressBar.style.color = "#000";
+    } else if (ratio < 100) {
+      progressBar.style.backgroundColor = "#ff9800";
+      progressBar.style.color = "#000";
+    } else {
+      progressBar.style.backgroundColor = "#00e676";
+      progressBar.style.color = "#121212";
+    }
+  </script>
 
-    document.getElementById("days").innerText = (daysDiffDays + 1) + " Days";
-  };
-</script>
+</body>
+</html>
