@@ -8,26 +8,27 @@
     body {
       margin: 0;
       font-family: 'Arial', sans-serif;
-      background: #121212;
-      color: #ffffff;
+      background: #f0f4f8; /* açık arka plan */
+      color: #121212;
       display: flex;
       flex-direction: column;
       align-items: center;
       padding: 40px 20px;
-      font-size: 0.75em; /* %25 küçültme */
+      font-size: 0.75em;
     }
 
     .info-bar {
       display: flex;
       flex-direction: row;
-      background: #1f1f1f;
+      background: linear-gradient(135deg, #1e3a8a, #3b82f6);
       border-radius: 8px;
-      box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.3);
       overflow: hidden;
       font-size: 1.2em;
       width: 100%;
       max-width: 600px;
       margin-bottom: 30px;
+      color: white;
     }
 
     .info-section {
@@ -37,26 +38,26 @@
     }
 
     .info-section:not(:last-child) {
-      border-right: 1px solid #333;
+      border-right: 1px solid rgba(255, 255, 255, 0.2);
     }
 
     .label {
       display: block;
-      color: #aaa;
-      font-size: 0.9em;
+      color: #e0f2fe;
+      font-size: 1.1em; /* büyütüldü */
       margin-bottom: 6px;
     }
 
     .value {
       font-weight: bold;
-      color: #00e676;
-      font-size: 1.4em;
+      color: #ffffff;
+      font-size: 1.6em;
     }
 
     .progress-container {
       width: 100%;
       max-width: 600px;
-      background-color: #e0e0e0;
+      background-color: #dbeafe;
       border-radius: 5px;
       overflow: hidden;
       position: relative;
@@ -69,7 +70,7 @@
       text-align: center;
       line-height: 26px;
       font-weight: bold;
-      color: #121212;
+      color: #ffffff;
       transition: width 0.4s ease, background-color 0.4s ease;
       position: absolute;
       top: 0;
@@ -114,14 +115,14 @@
 
     const ratio = parseFloat(payoutRatio);
     if (ratio <= 50) {
-      progressBar.style.backgroundColor = "#ffeb3b";
+      progressBar.style.backgroundColor = "#60a5fa"; // açık mavi
       progressBar.style.color = "#000";
     } else if (ratio < 100) {
-      progressBar.style.backgroundColor = "#ff9800";
-      progressBar.style.color = "#000";
+      progressBar.style.backgroundColor = "#3b82f6"; // normal mavi
+      progressBar.style.color = "#fff";
     } else {
-      progressBar.style.backgroundColor = "#00e676";
-      progressBar.style.color = "#121212";
+      progressBar.style.backgroundColor = "#2563eb"; // koyu mavi
+      progressBar.style.color = "#fff";
     }
   </script>
 
